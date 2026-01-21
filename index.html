@@ -333,6 +333,23 @@
             }
         });
 
+        async function readJsonSafe(response) {
+            const contentType = (response.headers.get('content-type') || '').toLowerCase();
+            const text = await response.text();
+
+            // Fast signal: if we got HTML, the API route is not returning JSON.
+            const looksLikeHtml = text.trim().startsWith('<');
+
+            let json = null;
+            try {
+                json = text ? JSON.parse(text) : null;
+            } catch (e) {
+                // Ignore parse errors here; caller will handle based on status/content.
+            }
+
+            return { json, text, contentType, looksLikeHtml };
+        }
+
         async function searchJobs() {
             const statusEl = document.getElementById('status');
             const searchBtn = document.getElementById('searchBtn');
@@ -396,12 +413,32 @@ CRITICAL: If a source returns 0 results or you cannot verify listings exist, ski
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error?.message || 'API request failed');
+                    const { json, text, looksLikeHtml } = await readJsonSafe(response);
+                    const msg =
+                        json?.error?.message ||
+                        json?.error ||
+                        `API request failed (${response.status})`;
+
+                    if (looksLikeHtml) {
+                        throw new Error(
+                            `${msg}. The server returned HTML, not JSON. This usually means /api/search is not being served as a function.`
+                        );
+                    }
+
+                    // If it's not HTML but still not JSON, show a short snippet.
+                    const snippet = text ? String(text).slice(0, 120) : '';
+                    throw new Error(snippet ? `${msg}. Response: ${snippet}` : msg);
                 }
 
-                const data = await response.json();
-                const content = data.choices[0].message.content;
+                const { json, looksLikeHtml } = await readJsonSafe(response);
+                if (looksLikeHtml || !json) {
+                    throw new Error('API returned an invalid response. Please try again in a minute.');
+                }
+
+                const content = json?.choices?.[0]?.message?.content;
+                if (!content) {
+                    throw new Error('API returned unexpected JSON. Check browser console for details.');
+                }
 
                 console.log('Raw API Response:', content);
 
