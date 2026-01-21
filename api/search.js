@@ -1,4 +1,8 @@
 // Vercel Serverless Function - Proxy for Perplexity API
+export const config = {
+    runtime: 'nodejs20'
+};
+
 export default async function handler(req, res) {
     // Only allow POST requests
     if (req.method !== 'POST') {
@@ -10,11 +14,14 @@ export default async function handler(req, res) {
 
     if (!apiKey) {
         console.error('PERPLEXITY_API_KEY not configured');
-        return res.status(500).json({ error: 'Server configuration error' });
+        return res.status(500).json({ error: 'Server is missing PERPLEXITY_API_KEY' });
     }
 
     try {
         const { messages, model, temperature } = req.body;
+        if (!Array.isArray(messages) || messages.length === 0) {
+            return res.status(400).json({ error: 'Invalid request: messages must be a non-empty array' });
+        }
 
         // Make request to Perplexity API
         const response = await fetch('https://api.perplexity.ai/chat/completions', {
