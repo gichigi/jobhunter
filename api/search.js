@@ -1,6 +1,7 @@
 // Vercel Serverless Function - Proxy for Perplexity API
 export const config = {
-    runtime: 'nodejs20'
+    // Vercel only supports these runtime values: 'nodejs' or 'edge'
+    runtime: 'nodejs'
 };
 
 export default async function handler(req, res) {
