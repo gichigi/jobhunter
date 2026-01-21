@@ -37,7 +37,7 @@ Get your API key from [Perplexity AI Settings](https://www.perplexity.ai/setting
 
 4. Install Vercel CLI (for local testing):
 ```bash
-npm install -g vercel
+pnpm add -g vercel
 ```
 
 5. Run the development server:
@@ -53,13 +53,15 @@ vercel dev
 
 1. Install Vercel CLI if you haven't:
 ```bash
-npm install -g vercel
+pnpm add -g vercel
 ```
 
 2. Deploy:
 ```bash
 vercel
 ```
+
+Once the project is linked in Vercel, every `git push` to the branch Vercel is watching will trigger a new deploy automatically.
 
 3. Follow the prompts to link to your Vercel account
 
