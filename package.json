@@ -1,0 +1,17 @@
+{
+  "name": "jobhunter",
+  "version": "1.0.0",
+  "description": "User Research Job Finder - Find remote user research positions across multiple job boards",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "keywords": [
+    "jobs",
+    "user-research",
+    "remote",
+    "job-search"
+  ],
+  "author": "",
+  "license": "MIT"
+}
