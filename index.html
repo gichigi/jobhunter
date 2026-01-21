@@ -350,7 +350,7 @@
                         model: 'sonar-pro',
                         messages: [{
                             role: 'user',
-                            content: `Find the TOP 10 HIGHEST-QUALITY job boards and career sites that CURRENTLY have active remote user research job listings. Exclude LinkedIn. Quality over quantity - only include sources you can VERIFY have real listings right now.
+                            content: `Find the TOP 10 HIGHEST-QUALITY job boards that CURRENTLY have active remote user research job listings. ONLY INCLUDE JOB BOARDS - DO NOT include individual company career pages. Exclude LinkedIn. Quality over quantity - only include sources you can VERIFY have real listings right now.
 
 VERIFICATION REQUIREMENTS (CRITICAL):
 - You MUST verify each source has at least 5+ active remote UX/User Research postings before including it
@@ -358,11 +358,12 @@ VERIFICATION REQUIREMENTS (CRITICAL):
 - If you cannot confirm listings exist, DO NOT include that source
 - NO DUPLICATES - each source should appear only once
 - Return EXACTLY 10 sources maximum
+- ONLY JOB BOARDS - NO individual company career pages (no Google Careers, Meta Careers, etc.)
 
 Priority order (include ONLY if they have verified listings):
-1. TIER 1 - Major high-traffic boards: Indeed, ZipRecruiter, Glassdoor, Monster, SimplyHired
-2. TIER 2 - Remote-specific boards: We Work Remotely, RemoteOK, FlexJobs, Remote.co, Remotive
-3. TIER 3 - Tech/UX specialist boards: AngelList/Wellfound, Built In, User Interviews Jobs, Cofolios
+1. TIER 1 - Major high-traffic job boards: Indeed, ZipRecruiter, Glassdoor, Monster, SimplyHired
+2. TIER 2 - Remote-specific job boards: We Work Remotely, RemoteOK, FlexJobs, Remote.co, Remotive
+3. TIER 3 - Tech/UX specialist job boards: AngelList/Wellfound, Built In, User Interviews Jobs, Cofolios
 4. TIER 4 - Only if above tiers don't have 10 sources: Dribbble, Behance Jobs, Otta, Startup.jobs
 
 For each source, provide:
@@ -389,7 +390,10 @@ Return ONLY valid JSON array - NO markdown, NO extra text:
   }
 ]
 
-CRITICAL: If a source returns 0 results or you cannot verify listings exist, skip it entirely. Better to return 5-8 high-quality sources than 10 sources where half are dead.`
+CRITICAL:
+- If a source returns 0 results or you cannot verify listings exist, skip it entirely
+- Better to return 5-8 high-quality JOB BOARDS than 10 sources where half are dead
+- DO NOT include individual company career pages - ONLY job boards that aggregate listings from multiple companies`
                         }],
                         temperature: 0.2
                     })
