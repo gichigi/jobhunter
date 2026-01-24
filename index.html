@@ -336,9 +336,11 @@
         async function searchJobs() {
             const statusEl = document.getElementById('status');
             const searchBtn = document.getElementById('searchBtn');
+            const originalBtnText = searchBtn.textContent;
 
             searchBtn.disabled = true;
-            showStatus('Searching for jobs... This may take a minute.', 'loading');
+            searchBtn.textContent = 'Searching...';
+            statusEl.style.display = 'none'; // Hide any previous status
 
             try {
                 const response = await fetch('/api/search', {
@@ -448,12 +450,14 @@ CRITICAL:
                 localStorage.setItem(JOBS_STORAGE, JSON.stringify(jobs));
 
                 displayResults(jobs);
-                showStatus(`Found ${jobs.length} job sources to explore`, 'success');
+                // Show success message after displaying results
+                showStatus(`Found ${jobs.length} job board${jobs.length !== 1 ? 's' : ''} to explore`, 'success');
             } catch (error) {
                 console.error('Error:', error);
                 showStatus(`Error: ${error.message}`, 'error');
             } finally {
                 searchBtn.disabled = false;
+                searchBtn.textContent = originalBtnText;
             }
         }
 
