@@ -1,17 +1,23 @@
 {
   "name": "jobhunter",
-  "version": "1.0.0",
-  "description": "User Research Job Finder - Find remote user research positions across multiple job boards",
-  "type": "module",
+  "version": "2.0.0",
+  "private": true,
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "keywords": [
-    "jobs",
-    "user-research",
-    "remote",
-    "job-search"
-  ],
-  "author": "",
-  "license": "MIT"
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
+  }
 }
