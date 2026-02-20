@@ -20,18 +20,6 @@ export function applyFilters(
 ): JobListing[] {
   let filtered = [...jobs];
 
-  // Remote scope filter
-  if (filters.remoteScope === "global") {
-    filtered = filtered.filter(
-      (j) => j.remoteScope === "global" || j.remoteScope === "unknown"
-    );
-  }
-
-  // Source board filter
-  if (filters.sourceBoard) {
-    filtered = filtered.filter((j) => j.sourceBoard === filters.sourceBoard);
-  }
-
   // Date range filter
   if (filters.dateRange) {
     const days = parseInt(filters.dateRange, 10);
