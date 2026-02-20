@@ -162,9 +162,10 @@ function extractDate(result: FirecrawlResult): Date | null {
     }
   }
 
-  // Priority 3: Standalone relative date near the top (first 500 chars)
+  // Priority 3: Standalone relative date (abbreviated or full form)
   const topContent = text.slice(0, 500);
-  const relativeMatch = topContent.match(/(\d+\s+(?:day|hour|week|month)s?\s+ago)/i);
+  // Match both "3d ago" and "3 days ago" formats
+  const relativeMatch = topContent.match(/(\d+\s*(?:d|h|w|m|day|hour|week|month)s?\s+ago)/i);
   if (relativeMatch) {
     const parsed = parseJobDate(relativeMatch[1]);
     if (parsed) return parsed;
@@ -200,6 +201,12 @@ export function normaliseResult(
   layer: "curated" | "discovery"
 ): { job: JobListing | null; dropReason: string | null } {
   if (!result.url) return { job: null, dropReason: "no_url" };
+
+  // Debug: log markdown length
+  if (result.markdown || result.content) {
+    const len = (result.markdown || result.content || "").length;
+    console.log(`[${boardName}] Markdown/content length: ${len} chars for ${result.url.split("/").pop()}`);
+  }
 
   const junkReason = isJunkResult(result);
   if (junkReason) return { job: null, dropReason: junkReason };

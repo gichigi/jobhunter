@@ -29,6 +29,7 @@ async function firecrawlSearch(
     sources: [{ type: "web" }],
     scrapeOptions: {
       formats: ["markdown"],
+      onlyMainContent: true, // Skip headers/footers/navigation
     },
   };
 
@@ -100,7 +101,7 @@ export async function searchBoard(
   logger: PipelineLogger
 ): Promise<JobListing[]> {
   const query = buildBoardQuery(board);
-  const raw = await firecrawlSearch(query, board.name, logger);
+  const raw = await firecrawlSearch(query, board.name, logger, 10); // Reduced from 20 to control scraping cost
   const normalised = normaliseResults(raw, board.name, board.layer, logger);
 
   logger.log({
@@ -142,7 +143,7 @@ export async function searchAllBoards(logger: PipelineLogger): Promise<{
   const discoveryPromise = (async () => {
     try {
       const query = buildDiscoveryQuery();
-      const raw = await firecrawlSearch(query, "Discovery", logger, 20);
+      const raw = await firecrawlSearch(query, "Discovery", logger, 10); // Reduced from 20
       const results = normaliseResults(raw, "Discovery", "discovery", logger);
 
       logger.log({
