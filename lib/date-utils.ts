@@ -70,8 +70,10 @@ export function isWithinRecencyWindow(
 
 // Format a date for display as relative time or short date
 export function formatRelativeDate(dateStr: string): string {
+  if (dateStr === "unknown") return "Recently";
+
   const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return "Unknown";
+  if (isNaN(date.getTime())) return "Recently";
 
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();

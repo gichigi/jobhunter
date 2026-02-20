@@ -219,9 +219,7 @@ export function normaliseResult(
 
   if (layer === "curated") {
     // Curated boards are trusted sources. If we can't parse a date,
-    // use today as the posting date rather than dropping the result.
-    const effectiveDate = date ?? new Date();
-
+    // mark as "unknown" rather than dropping the result.
     if (date && !isWithinRecencyWindow(date)) {
       return { job: null, dropReason: "too_old" };
     }
@@ -233,7 +231,7 @@ export function normaliseResult(
         company: extractCompany(result),
         location: "Remote",
         salary: extractSalary(result),
-        datePosted: effectiveDate.toISOString().split("T")[0],
+        datePosted: date ? date.toISOString().split("T")[0] : "unknown",
         sourceBoard: boardName,
         sourceUrl: result.url,
         description: result.description || "",

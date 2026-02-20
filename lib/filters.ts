@@ -25,18 +25,22 @@ export function applyFilters(
     const days = parseInt(filters.dateRange, 10);
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - days);
-    filtered = filtered.filter((j) => new Date(j.datePosted) >= cutoff);
+    filtered = filtered.filter((j) => {
+      // Keep jobs with unknown dates when filtering
+      if (j.datePosted === "unknown") return true;
+      return new Date(j.datePosted) >= cutoff;
+    });
   }
 
-  // Sort
-  if (filters.sortBy === "date") {
-    filtered.sort(
-      (a, b) =>
-        new Date(b.datePosted).getTime() - new Date(a.datePosted).getTime()
-    );
-  } else if (filters.sortBy === "company") {
-    filtered.sort((a, b) => a.company.localeCompare(b.company));
-  }
+  // Sort by date (newest first), with unknown dates treated as recent
+  filtered.sort((a, b) => {
+    // Treat unknown dates as very recent (sort to top)
+    if (a.datePosted === "unknown" && b.datePosted === "unknown") return 0;
+    if (a.datePosted === "unknown") return -1;
+    if (b.datePosted === "unknown") return 1;
+
+    return new Date(b.datePosted).getTime() - new Date(a.datePosted).getTime();
+  });
 
   return filtered;
 }

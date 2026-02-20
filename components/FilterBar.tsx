@@ -21,26 +21,7 @@ export default function FilterBar({
   filteredCount,
 }: FilterBarProps) {
   return (
-    <div className="mb-6 space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600">
-          {filteredCount} {filteredCount === 1 ? 'job' : 'jobs'}
-        </p>
-        <div className="flex items-center gap-1 text-sm">
-          <label className="text-gray-500">Sort:</label>
-          <select
-            value={filters.sortBy}
-            onChange={(e) =>
-              onFilterChange("sortBy", e.target.value as "date" | "company")
-            }
-            className="text-sm border border-gray-200 rounded px-2 py-1"
-          >
-            <option value="date">Newest</option>
-            <option value="company">Company A-Z</option>
-          </select>
-        </div>
-      </div>
-
+    <div className="mb-6">
       <div className="flex flex-wrap gap-2">
         {/* Date range filter */}
         <select
